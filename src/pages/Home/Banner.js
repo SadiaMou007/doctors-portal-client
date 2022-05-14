@@ -1,9 +1,15 @@
 import React from "react";
 import chair from "../../assets/images/chair.png";
+import bgBanner from "../../assets/images/bg.png";
 
 const Banner = () => {
   return (
-    <div class="hero h-[80vh] bg-base-200">
+    <div
+      class="hero min-h-[80vh]"
+      style={{
+        background: `url(${bgBanner})`,
+      }}
+    >
       <div class="hero-content flex-col lg:flex-row">
         <div className="mb-2">
           <h1 class="text-5xl font-bold">Your New Smiles Starts Here!</h1>

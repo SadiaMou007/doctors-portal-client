@@ -4,7 +4,7 @@ import Gradient from "../Shared/Gradient";
 
 const Treatment = () => {
   return (
-    <div class="hero shadow-xl mb-28">
+    <div class="hero shadow-xl mb-28 rounded">
       <div class="hero-content flex-col lg:flex-row">
         <img src={treatment} class="max-w-lg rounded-lg shadow-2xl h-96" />
         <div className="px-12">
@@ -17,7 +17,7 @@ const Treatment = () => {
             a id nisi. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
             Recusandae, inventore!
           </p>
-          <Gradient></Gradient>
+          <Gradient>Book Now</Gradient>
         </div>
       </div>
     </div>

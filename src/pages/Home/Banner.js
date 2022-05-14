@@ -1,11 +1,12 @@
 import React from "react";
 import chair from "../../assets/images/chair.png";
 import bgBanner from "../../assets/images/bg.png";
+import Gradient from "../Shared/Gradient";
 
 const Banner = () => {
   return (
     <div
-      class="hero min-h-[80vh]"
+      class="hero min-h-[90vh]"
       style={{
         background: `url(${bgBanner})`,
       }}
@@ -18,9 +19,7 @@ const Banner = () => {
             excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
             a id nisi.
           </p>
-          <button class="btn btn-primary uppercase text-white font-bold bg-gradient-to-r from-primary to-cyan-700">
-            Get Started
-          </button>
+          <Gradient>Get Started</Gradient>
         </div>
         <div className="h-full">
           <img src={chair} class="max-w-lg rounded-lg shadow-2xl " />

@@ -15,7 +15,7 @@ const MakeAppoinment = () => {
         <img
           src={doctor}
           alt=""
-          className="w-full h-[80vh] mt-[-100px] hidden lg:block"
+          className="w-full h-[85vh] mt-[-100px] hidden lg:block"
         />
       </div>
       <div className="w-full lg:w-1/2 p-4 m-auto">

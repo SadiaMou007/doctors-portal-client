@@ -5,10 +5,28 @@ import p2 from "../../assets/images/people2.png";
 import p3 from "../../assets/images/people3.png";
 import Review from "./Review";
 const Reviews = () => {
-  const customerReview = [
-    { _id: 1, img: p1, name: "Wilson Harry", address: "California" },
-    { _id: 2, img: p2, name: "Wilson Harry", address: "California" },
-    { _id: 3, img: p3, name: "Wilson Harry", address: "California" },
+  const reviews = [
+    {
+      _id: 1,
+      img: p1,
+      name: "Wilson Harry",
+      address: "California",
+      review: "",
+    },
+    {
+      _id: 2,
+      img: p2,
+      name: "Wilson Harry",
+      address: "California",
+      review: "",
+    },
+    {
+      _id: 3,
+      img: p3,
+      name: "Wilson Harry",
+      address: "California",
+      review: "",
+    },
   ];
   return (
     <div className="mb-24">
@@ -20,11 +38,11 @@ const Reviews = () => {
           <h2 className="text-2xl uppercase my-3">what our patients says</h2>
         </div>
         <div>
-          <img src={quotes} alt="" className="h-40" />
+          <img src={quotes} alt="" className="h-24 lg:h-40" />
         </div>
       </div>
       <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 sm:grid-cols-1">
-        {customerReview.map((review) => (
+        {reviews.map((review) => (
           <Review key={review._id} review={review}></Review>
         ))}
       </div>

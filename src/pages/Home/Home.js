@@ -6,10 +6,11 @@ import MakeAppoinment from "./MakeAppoinment";
 import Reviews from "./Reviews";
 import Services from "./Services";
 import Treatment from "./Treatment";
+import Footer from "../Shared/Footer";
 
 const Home = () => {
   return (
-    <div className="px-12">
+    <div className="">
       <Banner />
       <Info />
       <Services />
@@ -17,6 +18,7 @@ const Home = () => {
       <MakeAppoinment />
       <Reviews />
       <Contact />
+      <Footer />
     </div>
   );
 };

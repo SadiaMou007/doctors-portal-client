@@ -1,7 +1,6 @@
 import React from "react";
-import Gradient from "../Shared/Gradient";
 
-const Service = ({ service }) => {
+const Service = ({ service, setTreatment }) => {
   const { name, slots } = service;
   return (
     <div className="card bg-base-100 shadow-xl my-3">
@@ -15,12 +14,15 @@ const Service = ({ service }) => {
         <p>
           {slots.length} {slots.length > 1 ? "spaces" : "space"} available
         </p>
-        <button
-          disabled={slots.length === 0}
+
+        <label
+          for="booking-modal"
+          onClick={() => setTreatment(service)}
           className="btn btn-secondary text-white "
+          disabled={slots.length === 0}
         >
           Book Appointment
-        </button>
+        </label>
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import "react-day-picker/dist/style.css";
 import { format } from "date-fns";
 
 const AppointmentBanner = ({ date, setDate }) => {
-  console.log(date);
+  // console.log(date);
   return (
     <div class="hero min-h-[70vh]">
       <div class="hero-content flex-col lg:flex-row-reverse">

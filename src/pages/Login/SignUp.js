@@ -2,13 +2,15 @@ import React from "react";
 import Loading from "../Shared/Loading";
 import {
   useSignInWithGoogle,
-  useSignInWithEmailAndPassword,
+  useCreateUserWithEmailAndPassword,
+  useUpdateProfile,
 } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const Login = () => {
+const SignUp = () => {
+  const navigate = useNavigate();
   //google sign in//
   const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
 
@@ -20,39 +22,66 @@ const Login = () => {
   } = useForm();
 
   //email pass sign in
-  const [signInWithEmailAndPassword, user1, loading1, error1] =
-    useSignInWithEmailAndPassword(auth);
+  const [createUserWithEmailAndPassword, user1, loading1, error1] =
+    useCreateUserWithEmailAndPassword(auth);
+  const [updateProfile, updating, error2] = useUpdateProfile(auth);
 
   //control error,loading and user
 
-  if (loading || loading1) {
+  if (loading || loading1 || updating) {
     return <Loading></Loading>;
   }
   let errorMessage;
   if (error || error1) {
     errorMessage = (
       <p className="mb-3 text-red-500">
-        <small>{error?.message || error1?.message}</small>
+        <small>{error?.message || error1?.message || error2?.message}</small>
       </p>
     );
   }
 
   if (user || user1) {
-    console.log(user);
+    console.log(user, user1);
   }
 
-  const onSubmit = (data) => {
-    console.log(data);
-    signInWithEmailAndPassword(data.email, data.password);
+  const onSubmit = async (data) => {
+    await createUserWithEmailAndPassword(data.email, data.password);
+    await updateProfile({ displayName: data.name });
+    console.log("update done");
+    navigate("/appointment");
   };
 
   return (
     <div className="flex h-screen justify-center items-center">
       <div className="card w-1/2 shadow-inner hover:shadow-lg">
         <div className="card-body items-center text-center">
-          <h2 className="card-title">Login</h2>
+          <h2 className="card-title">Sign Up</h2>
           <div className=" w-full px-6">
             <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text">Name</span>
+                </label>
+                <input
+                  type="text"
+                  className="input input-bordered w-full "
+                  placeholder="Your Name"
+                  {...register("name", {
+                    required: {
+                      value: true,
+                      message: "Name is required",
+                    },
+                  })}
+                />
+                <label className="label">
+                  {errors.name?.type === "required" && (
+                    <span className="label-text-alt text-red-500">
+                      {errors.name.message}
+                    </span>
+                  )}
+                </label>
+              </div>
+
               <div className="form-control w-full">
                 <label className="label">
                   <span className="label-text">Email</span>
@@ -85,6 +114,7 @@ const Login = () => {
                   )}
                 </label>
               </div>
+
               <div className="form-control w-full">
                 <label className="label">
                   <span className="label-text">Password</span>
@@ -120,11 +150,9 @@ const Login = () => {
               {errorMessage}
               <input type="submit" value="login" className="btn w-full" />
               <p className="my-3">
-                New to Doctors Portal?{" "}
-                <Link to={"/signup"}>
-                  <span className="text-secondary cursor-pointer">
-                    Create new account
-                  </span>
+                Already have an account?
+                <Link to={"/login"}>
+                  <span className="text-secondary cursor-pointer">Sign In</span>
                 </Link>
               </p>
             </form>
@@ -143,4 +171,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

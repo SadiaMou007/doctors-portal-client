@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Loading from "../Shared/Loading";
 import {
   useSignInWithGoogle,
   useSignInWithEmailAndPassword,
+  useSendPasswordResetEmail,
 } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  let from = location.state?.from?.pathname || "/";
+
   //google sign in//
   const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
 
@@ -17,13 +22,24 @@ const Login = () => {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm();
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      email: "",
+    },
+  });
 
   //email pass sign in
   const [signInWithEmailAndPassword, user1, loading1, error1] =
     useSignInWithEmailAndPassword(auth);
+  const [sendPasswordResetEmail] = useSendPasswordResetEmail(auth);
 
   //control error,loading and user
+  useEffect(() => {
+    if (user || user1) {
+      navigate(from, { replace: true });
+    }
+  }, [user, user1, from, navigate]);
 
   if (loading || loading1) {
     return <Loading></Loading>;
@@ -37,13 +53,17 @@ const Login = () => {
     );
   }
 
-  if (user || user1) {
-    console.log(user);
-  }
-
   const onSubmit = (data) => {
-    console.log(data);
     signInWithEmailAndPassword(data.email, data.password);
+  };
+  const resetP = () => {
+    const email = window.prompt("Email");
+    if (email) {
+      sendPasswordResetEmail(email);
+      console.log("send email");
+    } else {
+      console.log("enter email address");
+    }
   };
 
   return (
@@ -119,6 +139,7 @@ const Login = () => {
               </div>
               {errorMessage}
               <input type="submit" value="login" className="btn w-full" />
+
               <p className="my-3">
                 New to Doctors Portal?{" "}
                 <Link to={"/signup"}>
@@ -128,6 +149,17 @@ const Login = () => {
                 </Link>
               </p>
             </form>
+            <p className="my-3">
+              Forgot Password?{" "}
+              <button>
+                <span
+                  className="text-secondary cursor-pointer"
+                  onClick={resetP}
+                >
+                  Reset Password
+                </span>
+              </button>
+            </p>
 
             <div className="divider">OR</div>
             <button

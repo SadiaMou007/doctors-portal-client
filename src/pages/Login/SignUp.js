@@ -7,11 +7,12 @@ import {
 } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  const location = useLocation();
   const navigate = useNavigate();
-  //google sign in//
+  let from = location.state?.from?.pathname || "/"; //google sign in//
   const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
 
   // react hook form
@@ -23,7 +24,7 @@ const SignUp = () => {
 
   //email pass sign in
   const [createUserWithEmailAndPassword, user1, loading1, error1] =
-    useCreateUserWithEmailAndPassword(auth);
+    useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
   const [updateProfile, updating, error2] = useUpdateProfile(auth);
 
   //control error,loading and user
@@ -41,7 +42,7 @@ const SignUp = () => {
   }
 
   if (user || user1) {
-    console.log(user, user1);
+    navigate(from, { replace: true });
   }
 
   const onSubmit = async (data) => {
@@ -148,7 +149,7 @@ const SignUp = () => {
                 </label>
               </div>
               {errorMessage}
-              <input type="submit" value="login" className="btn w-full" />
+              <input type="submit" value="sign up" className="btn w-full" />
               <p className="my-3">
                 Already have an account?
                 <Link to={"/login"}>

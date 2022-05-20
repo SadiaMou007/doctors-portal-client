@@ -1,6 +1,4 @@
 import React from "react";
-const { a, b } = { x: 2, y: 3 };
-console.log(b);
 
 const Service = ({ service, setTreatment }) => {
   const { name, slots } = service;
@@ -18,7 +16,7 @@ const Service = ({ service, setTreatment }) => {
         </p>
 
         <label
-          for="booking-modal"
+          htmlFor="booking-modal"
           onClick={() => setTreatment(service)}
           className="btn btn-sm btn-secondary text-white "
           disabled={slots.length === 0}

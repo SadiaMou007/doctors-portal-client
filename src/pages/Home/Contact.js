@@ -20,15 +20,15 @@ const Contact = () => {
         <input
           type="text"
           placeholder="Email Address"
-          class="input input-bordered input-md w-full my-3 text-primary"
+          className="input input-bordered input-md w-full my-3 text-primary"
         />
         <input
           type="text"
           placeholder="Subject"
-          class="input input-bordered input-md w-full my-3 text-primary"
+          className="input input-bordered input-md w-full my-3 text-primary"
         />
         <textarea
-          class="textarea textarea-bordered w-full my-3 text-primary"
+          className="textarea textarea-bordered w-full my-3 text-primary"
           placeholder="Your Message"
         ></textarea>
         <Gradient>Submit</Gradient>

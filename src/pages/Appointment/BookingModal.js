@@ -1,29 +1,65 @@
 import React from "react";
 import { format } from "date-fns";
+import auth from "../../firebase.init";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { toast } from "react-toastify";
 
-const BookingModal = ({ treatment, setTreatment, date }) => {
+const BookingModal = ({ treatment, setTreatment, date, refetch }) => {
   const { _id, name, slots } = treatment;
+  const [user] = useAuthState(auth);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
     const slot = e.target.slot.value;
-    console.log(_id, name, slot);
-    setTreatment(null);
+    e.preventDefault();
+    const formattedDate = format(date, "PP");
+
+    const booking = {
+      treatmentID: _id,
+      treatment: name,
+      date: formattedDate,
+      slot,
+      patient: user.email,
+      patientName: user.displayName,
+      phone: e.target.phone.value,
+    };
+
+    fetch("http://localhost:5000/booking", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(booking),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          toast.success(`Appointment is set: ${formattedDate} at ${slot}`);
+        } else {
+          toast.error(
+            `Already have an appointment on ${data.booking?.date} at ${data.booking?.slot}`
+          );
+          console.log(data);
+        }
+        setTreatment(null);
+        refetch();
+      });
   };
 
   return (
     <div>
-      <input type="checkbox" id="booking-modal" class="modal-toggle" />
-      <div class="modal modal-bottom sm:modal-middle">
-        <div class="modal-box">
+      <input type="checkbox" id="booking-modal" className="modal-toggle" />
+      <div className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">
           <label
-            for="booking-modal"
-            class="btn btn-sm btn-circle absolute right-2 top-2"
+            htmlFor="booking-modal"
+            className="btn btn-sm btn-circle absolute right-2 top-2"
           >
             ✕
           </label>
 
-          <h3 class="font-bold text-lg text-secondary">Booking for: {name}</h3>
+          <h3 className="font-bold text-lg text-secondary">
+            Booking for: {name}
+          </h3>
           <form
             onSubmit={handleSubmit}
             className=" grid grid-cols-1 gap-3 justify-items-center p-3"
@@ -38,20 +74,24 @@ const BookingModal = ({ treatment, setTreatment, date }) => {
               name="slot"
               className="select select-bordered w-full max-w-xs"
             >
-              {slots.map((slot) => (
-                <option value={slot}>{slot}</option>
+              {slots.map((slot, index) => (
+                <option value={slot} key={index}>
+                  {slot}
+                </option>
               ))}
             </select>
             <input
               type="text"
               name="name"
-              placeholder="Your Name"
+              disabled
+              value={user?.displayName || ""}
               className="input input-bordered w-full max-w-xs my-2"
             />
             <input
               type="email"
               name="email"
-              placeholder="Your Email Address"
+              disabled
+              value={user?.email || ""}
               className="input input-bordered w-full max-w-xs my-2"
             />
             <input

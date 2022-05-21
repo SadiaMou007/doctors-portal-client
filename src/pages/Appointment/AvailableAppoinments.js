@@ -15,9 +15,9 @@ const AvailableAppoinments = ({ date }) => {
     isLoading,
     refetch,
   } = useQuery(["available", formattedDate], () =>
-    fetch(`http://localhost:5000/available?date=${formattedDate}`).then((res) =>
-      res.json()
-    )
+    fetch(
+      `https://arcane-plains-24489.herokuapp.com/available?date=${formattedDate}`
+    ).then((res) => res.json())
   );
 
   if (isLoading) {
@@ -25,8 +25,8 @@ const AvailableAppoinments = ({ date }) => {
   }
 
   // useEffect(() => {
-  //   // fetch("http://localhost:5000/services")//change after find available booking slot
-  //   fetch(`http://localhost:5000/available?date=${formattedDate}`)
+  //   // fetch("https://arcane-plains-24489.herokuapp.com/services")//change after find available booking slot
+  //   fetch(`https://arcane-plains-24489.herokuapp.com/available?date=${formattedDate}`)
   //     .then((res) => res.json())
   //     .then((data) => setServices(data));
   // }, [formattedDate]);

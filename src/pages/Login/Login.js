@@ -8,6 +8,7 @@ import {
 import auth from "../../firebase.init";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import useToken from "../../Hooks/useToken";
 
 const Login = () => {
   const location = useLocation();
@@ -33,13 +34,16 @@ const Login = () => {
   const [signInWithEmailAndPassword, user1, loading1, error1] =
     useSignInWithEmailAndPassword(auth);
   const [sendPasswordResetEmail] = useSendPasswordResetEmail(auth);
+  //jwt token
+  const [token] = useToken(user || user1);
 
   //control error,loading and user
   useEffect(() => {
-    if (user || user1) {
+    //if (user || user1) {
+    if (token) {
       navigate(from, { replace: true });
     }
-  }, [user, user1, from, navigate]);
+  }, [token, from, navigate]);
 
   if (loading || loading1) {
     return <Loading></Loading>;

@@ -20,7 +20,7 @@ const Users = () => {
     return <Loading />;
   }
   return (
-    <div>
+    <div className="w-3/4 mx-auto">
       <div>
         <h2 className="text-2xl text-center my-2">All Users: {users.length}</h2>
         <div class="overflow-x-auto">
